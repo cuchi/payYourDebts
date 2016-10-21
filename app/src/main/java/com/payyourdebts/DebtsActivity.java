@@ -9,7 +9,15 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class DebtsActivity extends AppCompatActivity {
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+
+public class DebtsActivity extends AppCompatActivity implements DebtsView {
+
+    @BindView(R.id.add_debt)
+    FloatingActionButton addDebtButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,15 +25,12 @@ public class DebtsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_debts);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    @OnClick(R.id.add_debt)
+    public void addDebt() {
+        Snackbar.make(addDebtButton, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
     @Override
@@ -48,5 +53,15 @@ public class DebtsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setDebts(List<String> debts) {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+
     }
 }
