@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.payyourdebts.R;
 import com.payyourdebts.presenter.AddDebtsPresenter;
@@ -55,5 +56,10 @@ public class AddDebtActivity extends BaseActivity implements AddDebtView {
         data.putExtra("message", messageResId);
         this.setResult(RESULT_OK, data);
         this.finish();
+    }
+
+    @Override
+    public void toast(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 }

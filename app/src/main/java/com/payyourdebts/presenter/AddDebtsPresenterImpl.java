@@ -7,6 +7,8 @@ import com.payyourdebts.view.AddDebtView;
 
 import java.math.BigDecimal;
 
+import io.realm.exceptions.RealmException;
+
 /**
  * @author Paulo Henrique Cuchi
  */
@@ -23,7 +25,11 @@ public class AddDebtsPresenterImpl implements AddDebtsPresenter {
 
     @Override
     public void addDebt(String name, String value) {
-        this.store.save(new Debt(name, new BigDecimal(value)));
-        this.view.onSuccess(R.string.successful_insert);
+        try {
+            this.store.save(new Debt(name, new BigDecimal(value)));
+            this.view.onSuccess(R.string.successful_insert);
+        } catch (RealmException e) {
+            this.view.toast("Erro ao inserir dívida!");
+        }
     }
 }

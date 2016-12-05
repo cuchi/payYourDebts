@@ -27,6 +27,7 @@ import butterknife.OnClick;
 
 public class DebtsActivity extends BaseActivity implements DebtsView {
 
+    private static final int FROM_CREATION = 0x1;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -56,7 +57,7 @@ public class DebtsActivity extends BaseActivity implements DebtsView {
     }
 
     public void navigateToAddDebt() {
-        this.startActivityForResult(new Intent(this, AddDebtActivity.class), 0);
+        this.startActivityForResult(new Intent(this, AddDebtActivity.class), FROM_CREATION);
     }
 
     @Override
@@ -83,6 +84,9 @@ public class DebtsActivity extends BaseActivity implements DebtsView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == FROM_CREATION && resultCode == RESULT_OK) {
+            this.toast(this.getString(data.getIntExtra("message", 0)));
+        }
         this.presenter.refresh();
         this.debts.invalidate();
         this.adapter.notifyDataSetChanged();

@@ -6,4 +6,5 @@ package com.payyourdebts.view;
 public interface AddDebtView {
     void onError(String message);
     void onSuccess(int messageResId);
+    void toast(String s);
 }
