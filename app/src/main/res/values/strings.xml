@@ -5,4 +5,5 @@
     <string name="value">Valor</string>
     <string name="insert">Inserir</string>
     <string name="successful_insert">Inserido com sucesso!</string>
+    <string name="sample_money">R$ 50,90</string>
 </resources>

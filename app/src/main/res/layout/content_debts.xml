@@ -13,9 +13,9 @@
     tools:context=".view.activity.DebtsActivity"
     tools:showIn="@layout/activity_debts">
 
-    <TextView
+    <ListView
         android:id="@+id/debts_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        />
 </RelativeLayout>

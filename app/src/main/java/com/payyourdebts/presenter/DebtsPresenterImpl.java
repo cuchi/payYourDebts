@@ -1,5 +1,6 @@
 package com.payyourdebts.presenter;
 
+import com.payyourdebts.model.Debt;
 import com.payyourdebts.model.DebtsStore;
 import com.payyourdebts.view.DebtsView;
 
@@ -22,7 +23,15 @@ public class DebtsPresenterImpl implements DebtsPresenter {
     }
 
     @Override
+    public void deleteDebt(Debt debt) {
+        this.store.delete(debt);
+        this.view.refresh(this.store.findAll());
+        this.view.toast("Dívida deletada!");
+    }
+
+    @Override
     public void refresh() {
         this.view.setDebts(store.findAll());
     }
+
 }

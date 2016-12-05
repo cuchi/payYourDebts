@@ -3,12 +3,14 @@ package com.payyourdebts.model;
 import java.math.BigDecimal;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * @author Paulo Henrique Cuchi
  */
 
 public class Debt extends RealmObject {
+    @PrimaryKey
     private String name;
     private String value;
 

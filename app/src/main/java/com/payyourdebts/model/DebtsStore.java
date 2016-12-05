@@ -31,4 +31,13 @@ public class DebtsStore {
         this.realm.delete(Debt.class);
         this.realm.commitTransaction();
     }
+
+    public void delete(Debt debt) {
+        this.realm.beginTransaction();
+        Debt toDelete = this.realm.where(Debt.class).equalTo("name", debt.getName()).findFirst();
+        if (toDelete != null) {
+            toDelete.deleteFromRealm();
+        }
+        this.realm.commitTransaction();
+    }
 }

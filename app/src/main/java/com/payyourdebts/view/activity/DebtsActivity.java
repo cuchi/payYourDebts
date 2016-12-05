@@ -1,10 +1,14 @@
 package com.payyourdebts.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +18,7 @@ import com.payyourdebts.presenter.DebtsPresenterImpl;
 import com.payyourdebts.view.DebtsView;
 import com.payyourdebts.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,18 +31,23 @@ public class DebtsActivity extends BaseActivity implements DebtsView {
     Toolbar toolbar;
 
     @BindView(R.id.debts_list)
-    TextView debts;
+    ListView debts;
 
     private DebtsPresenter presenter;
+    private List<Debt> debtsList = new ArrayList<>();
+    private DebtsListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(null);
         this.setContentView(R.layout.activity_debts);
-        this.setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+        this.setSupportActionBar(toolbar);
 
         this.presenter = new DebtsPresenterImpl(this);
+
+        this.adapter = new DebtsListAdapter(this, this.debtsList, this.presenter);
+        this.debts.setAdapter(this.adapter);
     }
 
     @OnClick(R.id.add_debt)
@@ -46,45 +56,35 @@ public class DebtsActivity extends BaseActivity implements DebtsView {
     }
 
     public void navigateToAddDebt() {
-        this.startActivity(new Intent(this, AddDebtActivity.class));
+        this.startActivityForResult(new Intent(this, AddDebtActivity.class), 0);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        this.getMenuInflater().inflate(R.menu.menu_debts, menu);
-        return true;
+    public Context getContext() {
+        return this;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void refresh(List<Debt> debts) {
+        this.debtsList = debts;
+        this.debts.invalidate();
+        this.adapter.notifyDataSetChanged();
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    @Override
+    public void toast(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void setDebts(List<Debt> debts) {
-        StringBuilder debtsList = new StringBuilder("Debts:\n\n");
-        for (Debt debt : debts) {
-            debtsList.append(debt.getName())
-                .append(" - ")
-                .append(debt.getValue().toString())
-                .append("\n");
-        }
-        this.debts.setText(debtsList.toString());
+        this.debtsList = debts;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         this.presenter.refresh();
+        this.debts.invalidate();
+        this.adapter.notifyDataSetChanged();
     }
 }
